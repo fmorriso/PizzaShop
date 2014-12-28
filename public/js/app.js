@@ -61,6 +61,7 @@
             name: "Collect Money"
         }];
 
+        // default the current step to baking the pie
         status.currentStep = 2;
 
     });
