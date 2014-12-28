@@ -1,81 +1,84 @@
 // app.js
 (function () {
 
-  "use strict";
+    "use strict";
 
-  var x = 0;
+    var x = 0;
 
-  var module = angular.module("pizzaApp", ["ngRoute"]);
+    var module = angular.module("pizzaApp", ["ngRoute"]);
 
-  module.config(function ($routeProvider) {
+    module.config(function ($routeProvider) {
 
-    $routeProvider.when('/', {
-      templateUrl: 'templates/order.tmpl.html',
-      controller: 'orderController',
-      controllerAs: "order"
+        $routeProvider.when('/', {
+            templateUrl: 'templates/order.tmpl.html',
+            controller: 'orderController',
+            controllerAs: "order"
+        });
+
+        $routeProvider.when('/status', {
+            templateUrl: 'templates/status.tmpl.html',
+            controller: 'statusController',
+            controllerAs: "status"
+        });
+
+
+        $routeProvider.otherwise({redirectTo: '/'});
+
     });
 
-    $routeProvider.when('/status', {
-      templateUrl: 'templates/status.tmpl.html',
-      controller: 'statusController',
-      controllerAs: "status"
+    module.controller("orderController", function () {
+
+        var order = this;
+
+        order.orderCount = 0;
+
+        order.addOrder = function () {
+            order.orderCount++;
+        };
+
     });
 
+    module.controller("statusController", function () {
+        var status = this;
 
-    $routeProvider.otherwise({redirectTo: '/'});
+        status.steps = [{
+            num: 1,
+            name: "Make Pie"
+        }, {
+            num: 2,
+            name: "Bake Pie"
+        }, {
+            num: 3,
+            name: "Box Pie"
+        }, {
+            num: 4,
+            name: "Queue Pie"
+        }, {
+            num: 5,
+            name: "Deliver Pie"
+        }, {
+            num: 6,
+            name: "Collect Money"
+        }];
 
-  });
+        status.currentStep = 2;
 
-  module.controller("orderController", function () {
+    });
 
-    var order = this;
+    /**
+     * @ngdoc directive
+     * @name wmPizzaBar
+     * @description Show a pizza bar
+     */
+    module.directive('wmPizzaBar', function () {
 
-    order.orderCount = 0;
+        return {
+            link: function (scope, element, attrs) {
+                element.text("this is the statusBar");
+            },
+            restrict: "E"
+        };
 
-    order.addOrder = function () {
-      order.orderCount++;
-    };
-
-  });
-
-  module.controller("statusController", function () {
-    var status = this;
-
-    status.steps = [{
-      num: 1,
-      name: "Make Pie"
-    }, {
-      num: 2,
-      name: "Bake Pie"
-    }, {
-      num: 3,
-      name: "Box Pie"
-    }, {
-      num: 4,
-      name: "Queue Pie"
-    }, {
-      num: 5,
-      name: "Deliver Pie"
-    }];
-
-    status.currentStep = 2;
-
-  });
-
-  /**
-   * @ngdoc directive
-   * @name wmPizzaBar
-   * @description Show a pizza bar
-   */
-  module.directive('wmPizzaBar', function () {
-
-    return {
-      link: function (scope, element, attrs) {
-        element.text("this is the statusBar");
-      },
-      restrict: "E"
-    };
-
-  });
+    });
 
 })();
